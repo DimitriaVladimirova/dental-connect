@@ -1,0 +1,39 @@
+<section class="dentists">
+  <header class="list-header">
+    <h2>Dentists</h2>
+
+    <div class="actions">
+      <button *ngIf="isDentistLoggedIn()" routerLink="/dentist/profile">
+        Create / Edit My Profile
+      </button>
+      <button (click)="fetch()" class="refresh-btn" title="Refresh list">
+        ↻
+      </button>
+    </div>
+  </header>
+
+  <div *ngIf="loading()" class="info">Loading dentists...</div>
+  <div *ngIf="error()" class="error">{{ error() }}</div>
+  <div *ngIf="!loading() && !error() && dentists().length === 0" class="info">
+    No dentist profiles yet.
+  </div>
+
+  <ul *ngIf="!loading() && !error() && dentists().length > 0" class="cards">
+    <li *ngFor="let d of dentists(); trackBy: trackById" class="card">
+      <div class="img-wrap" *ngIf="d.imageUrl">
+        <img [src]="d.imageUrl" [alt]="d.fullName" loading="lazy">
+      </div>
+      <div class="body">
+        <h3>{{ d.fullName }}</h3>
+        <p class="spec" *ngIf="d.specialization">{{ d.specialization }}</p>
+        <p class="work" *ngIf="d.workplace">{{ d.workplace }}</p>
+        <p class="uni" *ngIf="d.university">{{ d.university }}</p>
+        <p class="details" *ngIf="d.details">{{ d.details | slice:0:100 }}<span *ngIf="d.details.length > 100">…</span></p>
+        <div class="footer">
+          <!-- Future route for details -->
+          <a [routerLink]="['/dentists', d._id]" class="details-link">Details</a>
+        </div>
+      </div>
+    </li>
+  </ul>
+</section>

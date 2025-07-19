@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { DentistProfile } from '../../models/dentist';
-import { Observable } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class DentistsService {
@@ -15,15 +15,33 @@ export class DentistsService {
     return this.api.get<DentistProfile>(`/data/dentists/${id}`);
   }
 
-  create(profile: DentistProfile): Observable<DentistProfile> {
-    return this.api.post<DentistProfile>('/data/dentists', profile);
-  }
+  create(profile: Partial<DentistProfile>): Observable<DentistProfile> {
+  return this.api.post<DentistProfile>('/data/dentists', profile);
+}
 
-  update(id: string, profile: DentistProfile): Observable<DentistProfile> {
-    return this.api.put<DentistProfile>(`/data/dentists/${id}`, profile);
-  }
+update(id: string, profile: Partial<DentistProfile>): Observable<DentistProfile> {
+  return this.api.put<DentistProfile>(`/data/dentists/${id}`, profile);
+}
 
   delete(id: string) {
     return this.api.delete(`/data/dentists/${id}`);
+  }
+  
+   loadMine(ownerId: string) {
+  return this.list().pipe(
+    map(list => list.find(p => p._ownerId === ownerId))
+  );
+}
+
+  upsertMine(ownerId: string, data: Partial<DentistProfile>): Observable<DentistProfile> {
+    return this.loadMine(ownerId).pipe(
+      switchMap(existing => {
+        if (existing && existing._id) {
+          return this.update(existing._id, { ...existing, ...data });
+        }
+        // new profile
+        return this.create({ ...data });
+      })
+    );
   }
 }

@@ -1,0 +1,32 @@
+<section class="profile-form">
+  <h2>{{ mode() }} Dentist Profile</h2>
+
+  <div *ngIf="loading()">Loading...</div>
+  <div class="error" *ngIf="error()">{{ error() }}</div>
+
+  <form *ngIf="!loading()" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row">
+      <label>Full Name *</label>
+      <input formControlName="fullName" type="text" />
+      <div class="field-error" *ngIf="fieldInvalid('fullName')">
+        Full name is required (min 2 characters).
+      </div>
+    </div>
+
+    <div class="row"><label>University</label><input formControlName="university" type="text" /></div>
+    <div class="row"><label>Workplace</label><input formControlName="workplace" type="text" /></div>
+    <div class="row"><label>Specialization</label><input formControlName="specialization" type="text" /></div>
+    <div class="row"><label>Phone</label><input formControlName="phone" type="text" /></div>
+    <div class="row"><label>Image URL</label><input formControlName="imageUrl" type="url" /></div>
+    <div class="row">
+      <label>Details / Bio</label>
+      <textarea formControlName="details" rows="4"></textarea>
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="saving()">
+        {{ saving() ? 'Saving...' : (mode() + ' Profile') }}
+      </button>
+    </div>
+  </form>
+</section>
