@@ -1,0 +1,33 @@
+<header class="site-header">
+  <div class="brand">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Dentist<span>Connect</span>
+    </a>
+  </div>
+
+  <!-- Logged-in -->
+  <nav class="nav" *ngIf="(user$ | async) as user; else guestNav">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a routerLink="/dentists" routerLinkActive="active">Dentists</a>
+    <a routerLink="/promotions" routerLinkActive="active">Promotions</a>
+
+    <a *ngIf="isDentist()" routerLink="/dentist/profile" routerLinkActive="active">My Profile</a>
+    <a *ngIf="isDentist()" routerLink="/promotions/create" routerLinkActive="active">Add Promotion</a>
+
+    <span class="spacer"></span>
+    <span class="welcome">Hi, {{ user.email }}</span>
+    <button type="button" class="logout" (click)="logout()">Logout</button>
+  </nav>
+
+  <!-- Guest -->
+  <ng-template #guestNav>
+    <nav class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/dentists" routerLinkActive="active">Dentists</a>
+      <a routerLink="/promotions" routerLinkActive="active">Promotions</a>
+      <span class="spacer"></span>
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+      <a routerLink="/register" routerLinkActive="active" class="highlight">Register</a>
+    </nav>
+  </ng-template>
+</header>

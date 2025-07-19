@@ -1,0 +1,33 @@
+<section class="auth-card">
+  <h2>Login</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label>
+      <span>Email</span>
+      <input type="email" formControlName="email" />
+    </label>
+    <div class="err"
+         *ngIf="form.controls['email'].touched && form.controls['email'].invalid">
+      Enter a valid email.
+    </div>
+
+    <label>
+      <span>Password</span>
+      <input type="password" formControlName="password" />
+    </label>
+    <div class="err"
+         *ngIf="form.controls['password'].touched && form.controls['password'].invalid">
+      Min length 3.
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || loading">
+      {{ loading ? 'Logging in...' : 'Login' }}
+    </button>
+
+    <p class="alt">
+      No account? <a routerLink="/register">Register here</a>
+    </p>
+
+    <p class="error-banner" *ngIf="error">{{ error }}</p>
+  </form>
+</section>

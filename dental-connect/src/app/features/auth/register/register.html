@@ -1,0 +1,59 @@
+<section class="auth-card">
+  <h2>Register</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <fieldset class="roles">
+      <label>
+        <input type="radio" value="patient" formControlName="role" />
+        Patient
+      </label>
+      <label>
+        <input type="radio" value="dentist" formControlName="role" />
+        Dentist
+      </label>
+    </fieldset>
+
+    <label>
+      <span>Email</span>
+      <input type="email" formControlName="email" />
+    </label>
+    <div class="err"
+         *ngIf="form.controls['email'].touched && form.controls['email'].invalid">
+      Enter a valid email.
+    </div>
+
+    <label>
+      <span>Password</span>
+      <input type="password" formControlName="password" />
+    </label>
+
+    <label>
+      <span>Repeat Password</span>
+      <input type="password" formControlName="repass" />
+    </label>
+    <div class="err" *ngIf="form.errors?.['mismatch']">
+      Passwords do not match.
+    </div>
+
+    <ng-container *ngIf="isDentist">
+      <label>
+        <span>Full Name</span>
+        <input type="text" formControlName="fullName" />
+      </label>
+      <label>
+        <span>Personal Health Number</span>
+        <input type="text" formControlName="personalHealthNumber" />
+      </label>
+    </ng-container>
+
+    <button type="submit" [disabled]="form.invalid || loading">
+      {{ loading ? 'Registering...' : 'Register' }}
+    </button>
+
+    <p class="alt">
+      Have an account? <a routerLink="/login">Login here</a>
+    </p>
+
+    <p class="error-banner" *ngIf="error">{{ error }}</p>
+  </form>
+</section>

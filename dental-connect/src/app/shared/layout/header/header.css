@@ -1,0 +1,194 @@
+/* Layout Container */
+.site-header {
+  --brand-color: #1976d2;
+  --brand-color-hover: #125ca5;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --bg: #ffffff;
+  --border: #e3e8ee;
+  --text: #24313d;
+  --text-muted: #546170;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 4px -2px rgba(0,0,0,.04);
+  font-size: 0.95rem;
+}
+
+/* Brand */
+.brand a {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: .5px;
+  text-decoration: none;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  line-height: 1;
+}
+
+.brand span {
+  color: var(--brand-color);
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .65rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.nav a {
+  --pad-x: .75rem;
+  --pad-y: .45rem;
+  text-decoration: none;
+  color: var(--text-muted);
+  padding: var(--pad-y) var(--pad-x);
+  border-radius: 6px;
+  font-weight: 500;
+  line-height: 1.1;
+  position: relative;
+  transition: background .18s, color .18s, box-shadow .18s;
+}
+
+.nav a:hover,
+.nav a:focus-visible {
+  background: var(--brand-color);
+  color: #fff;
+  outline: none;
+}
+
+.nav a.active {
+  background: var(--brand-color);
+  color: #fff;
+  box-shadow: 0 0 0 1px var(--brand-color);
+}
+
+.nav a.highlight {
+  background: var(--brand-color);
+  color: #fff;
+  box-shadow: 0 2px 4px -2px rgba(0,0,0,.2);
+}
+
+.nav a.highlight:hover,
+.nav a.highlight:focus-visible {
+  background: var(--brand-color-hover);
+}
+
+/* Spacer pushes right cluster (welcome + logout) */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Welcome text */
+.welcome {
+  font-size: .78rem;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: #f1f5f9;
+  padding: .35rem .55rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Logout Button */
+.logout {
+  --pad-x: .85rem;
+  --pad-y: .5rem;
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  padding: var(--pad-y) var(--pad-x);
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.1;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  transition: background .18s, box-shadow .18s;
+}
+
+.logout:hover,
+.logout:focus-visible {
+  background: var(--danger-hover);
+  outline: none;
+}
+
+.logout:active {
+  transform: translateY(1px);
+}
+
+/* Focus Styles */
+.nav a:focus-visible,
+.logout:focus-visible,
+.brand a:focus-visible {
+  box-shadow: 0 0 0 3px rgba(25,118,210,.35);
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .nav a,
+  .logout {
+    transition: none;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 780px) {
+  .site-header {
+    flex-wrap: wrap;
+    padding: .75rem .9rem;
+    gap: .75rem;
+  }
+  .brand {
+    flex: 1 0 100%;
+  }
+  .nav {
+    gap: .5rem;
+  }
+  .welcome {
+    order: 10;
+  }
+}
+
+@media (max-width: 460px) {
+  .nav a {
+    padding: .4rem .55rem;
+    font-size: .78rem;
+  }
+  .logout {
+    padding: .45rem .65rem;
+    font-size: .75rem;
+  }
+  .brand a {
+    font-size: 1.15rem;
+  }
+}
+
+/* High contrast mode hints */
+@media (forced-colors: active) {
+  .nav a,
+  .logout,
+  .brand a {
+    forced-color-adjust: none;
+    border: 1px solid ButtonText;
+  }
+  .nav a.active,
+  .nav a:hover,
+  .logout {
+    border-color: Highlight;
+  }
+}
