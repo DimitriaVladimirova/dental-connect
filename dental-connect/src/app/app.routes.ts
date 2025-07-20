@@ -7,12 +7,20 @@ export const routes: Routes = [
     {
     path: 'dentists',
     loadComponent: () =>
-      import('./features/dentists/list/dentists-list/dentists-list')
+      import('./features/dentists/list/dentists-list')
         .then(m => m.DentistsListComponent)
-  },
+    },
     { path: 'dentist/profile',
-  loadComponent: () =>
-    import('./features/dentists/profile/dentist-profile-form/dentist-profile-form')
+    loadComponent: () =>
+    import('./features/dentists/profile/dentist-profile-form')
       .then(m => m.DentistProfileFormComponent)
-}
+  },
+  {  path: 'dentists/:id',
+    loadComponent: () =>
+    import('./features/dentists/details/dentist-details')
+      .then(m => m.DentistDetailsComponent)
+  }, 
+
+
+   { path: '**', redirectTo: '' }
 ];

@@ -1,8 +1,8 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DentistsService } from '../../../../core/services/dentists.service';
-import { AuthService } from '../../../../core/services/auth.service';
+import { DentistsService } from '../../../core/services/dentists.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

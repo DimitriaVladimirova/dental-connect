@@ -5,10 +5,10 @@ import {
   inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DentistsService } from '../../../../core/services/dentists.service';
-import { AuthService } from '../../../../core/services/auth.service';
+import { DentistsService } from '../../../core/services/dentists.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { RouterLink } from '@angular/router';
-import { DentistProfile } from '../../../../models/dentist';
+import { DentistProfile } from '../../../models/dentist';
 
 @Component({
   standalone: true,

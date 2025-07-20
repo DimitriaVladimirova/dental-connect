@@ -1,0 +1,40 @@
+<section class="dentist-details">
+  <div *ngIf="loading()" class="state info">Loading dentist...</div>
+  <div *ngIf="!loading() && error()" class="state error">{{ error() }}</div>
+
+  <ng-container *ngIf="!loading() && !error() && dentist() as d">
+    <header class="header">
+      <h1>{{ d.fullName }}</h1>
+      <div class="meta">
+        <span *ngIf="d.specialization" class="tag">{{ d.specialization }}</span>
+        <span *ngIf="d.workplace">{{ d.workplace }}</span>
+        <span *ngIf="d.university">• {{ d.university }}</span>
+      </div>
+    </header>
+
+    <div class="layout">
+      <div class="image" *ngIf="d.imageUrl">
+        <img [src]="d.imageUrl" [alt]="d.fullName" loading="lazy">
+      </div>
+
+      <div class="content">
+        <h3>About</h3>
+        <p *ngIf="d.details; else noDetails">{{ d.details }}</p>
+        <ng-template #noDetails><p class="muted">No additional details provided.</p></ng-template>
+
+        <div class="contact" *ngIf="d.phone">
+          <h3>Contact</h3>
+            <p><strong>Phone:</strong> {{ d.phone }}</p>
+        </div>
+
+        <div class="actions">
+          <a routerLink="/dentists" class="btn secondary">Back to List</a>
+          <a *ngIf="isOwner()" routerLink="/dentist/profile" class="btn primary">Edit My Profile</a>
+          <a *ngIf="!isOwner()" routerLink="/promotions?dentist={{d._id}}" class="btn outline">
+            View Promotions
+          </a>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</section>
