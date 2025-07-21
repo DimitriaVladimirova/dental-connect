@@ -30,8 +30,10 @@
         <div class="actions">
           <a routerLink="/dentists" class="btn secondary">Back to List</a>
           <a *ngIf="isOwner()" routerLink="/dentist/profile" class="btn primary">Edit My Profile</a>
-          <a *ngIf="!isOwner()" routerLink="/promotions?dentist={{d._id}}" class="btn outline">
-            View Promotions
+          <a [routerLink]="['/promotions']"
+             [queryParams]="{ dentist: d._id }"
+             class="btn outline">
+             View Promotions
           </a>
         </div>
       </div>

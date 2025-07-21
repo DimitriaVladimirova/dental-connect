@@ -20,6 +20,18 @@ export const routes: Routes = [
     import('./features/dentists/details/dentist-details')
       .then(m => m.DentistDetailsComponent)
   }, 
+  {
+    path: 'promotions',
+    loadComponent: () =>
+      import('./features/promotions/list/promotions-list')
+        .then(m => m.PromotionsListComponent)
+},
+{
+    path: 'promotions/create',
+    loadComponent: () =>
+      import('./features/promotions/create/promotion-create')
+        .then(m => m.PromotionCreate)
+},
 
 
    { path: '**', redirectTo: '' }

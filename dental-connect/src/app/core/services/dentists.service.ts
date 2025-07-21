@@ -28,8 +28,8 @@ update(id: string, profile: Partial<DentistProfile>): Observable<DentistProfile>
   }
   
    loadMine(ownerId: string) {
-  return this.list().pipe(
-    map(list => list.find(p => p._ownerId === ownerId))
+    return this.list().pipe(
+    map(list => list.find(d => d._ownerId === ownerId) || null)
   );
 }
 

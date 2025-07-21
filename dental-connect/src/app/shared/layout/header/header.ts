@@ -16,7 +16,9 @@ export class HeaderComponent {
 
   user$ = this.auth.user$;
   isLoggedIn = computed(() => this.auth.isLoggedIn());
-  isDentist = computed(() => this.auth.role === 'dentist');
+  isDentist(): boolean {
+  return this.auth.isLoggedIn() && this.auth.role === 'dentist';
+}
 
   logout() {
     this.auth.logout();

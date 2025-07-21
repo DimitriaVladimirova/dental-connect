@@ -4,7 +4,7 @@ export interface Promotion {
   dentistId: string;
   service: string;
   price: number;
-  description: string;
+  description?: string;
   _createdOn?: number;
   _updatedOn?: number;
 }

@@ -1,0 +1,63 @@
+<section class="promotions">
+  <h2>Promotions</h2>
+
+  <div *ngIf="error()" class="error">{{ error() }}</div>
+  <div *ngIf="loading()">Loading promotions…</div>
+
+  <div class="actions" *ngIf="isDentist()">
+    <a routerLink="/promotions/create" class="btn primary">Add Promotion</a>
+  </div>
+
+  <ul class="promo-list" *ngIf="!loading() && filtered().length">
+    <li *ngFor="let p of filtered()" class="promo-item">
+
+      <div class="line">
+        <span class="label">Service:</span>
+        <span class="value">{{ p.service }}</span>
+      </div>
+
+      <div class="line">
+        <span class="label">Price:</span>
+        <span class="value">{{ p.price | number:'1.2-2' }} €</span>
+      </div>
+
+      <div class="line" *ngIf="p.description">
+        <span class="label">Description:</span>
+        <span class="value">{{ p.description }}</span>
+      </div>
+
+      <div class="line">
+        <span class="label">Dentist:</span>
+        <span class="value">
+          <a *ngIf="dentistProfileLink(p); else noLink"
+             [routerLink]="dentistProfileLink(p)">
+            {{ dentistName(p) }}
+          </a>
+          <ng-template #noLink>{{ dentistName(p) }}</ng-template>
+        </span>
+      </div>
+
+      <div class="buttons">
+        
+        <button *ngIf="isLoggedIn()" (click)="buy(p)" class="btn small">Buy</button>
+
+        <button
+          *ngIf="isDentist() && p._ownerId === auth.user?._id"
+          (click)="deletePromotion(p)"
+          class="btn danger small">
+          Delete
+        </button>
+      </div>
+
+    </li>
+  </ul>
+
+  <p *ngIf="!loading() && !filtered().length" class="empty">
+    No promotions found.
+  </p>
+
+  <div class="guest-hint" *ngIf="!isLoggedIn() && !loading()">
+    <a routerLink="/login">Login</a> or
+    <a routerLink="/register">register</a> to buy promotions.
+  </div>
+</section>
