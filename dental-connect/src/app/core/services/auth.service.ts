@@ -23,22 +23,30 @@ export class AuthService {
   get token(): string | undefined { return this.user?.accessToken; }
   isLoggedIn(): boolean { return !!this.user?.accessToken; }
 
-  register(email: string, password: string, role: 'dentist' | 'patient') {
-    return this.api.post<User>('/users/register', { email, password }).pipe(
-      tap(u => this.setUser({ ...u, role }))
-    );
-  }
+  register(
+  email: string,
+  password: string,
+  role: 'dentist' | 'patient',
+  personalHealthNumber?: string
+) {
+  return this.api.post<User>('/users/register', {
+    email,
+    password,
+    role,
+    // only send health number for dentists
+    ...(role === 'dentist' && personalHealthNumber
+      ? { personalHealthNumber }
+      : {})
+  }).pipe(
+    tap(user => this.setUser(user))
+  );
+}
 
   login(email: string, password: string) {
-    return this.api.post<User>('/users/login', { email, password }).pipe(
-      tap(u => {
-        // we cannot know role from backend yet – keep previous role if same email
-        const existing = this.user;
-        const role = existing?.email === u.email ? existing.role : undefined;
-        this.setUser({ ...u, role });
-      })
-    );
-  }
+  return this.api.post<User>('/users/login', { email, password }).pipe(
+    tap(u => this.setUser(u))
+  );
+}
 
   logout() {
     if (!this.isLoggedIn()) return;

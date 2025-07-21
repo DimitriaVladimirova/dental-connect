@@ -42,12 +42,15 @@ export class RegisterComponent {
   }
 
   submit() {
-    if (this.form.invalid) return;
-    this.loading = true;
-    this.error = '';
+  if (this.form.invalid) return;
+  this.loading = true;
+  this.error = '';
 
-    const { email, password, role } = this.form.value;
-    this.auth.register(email, password, role).subscribe({
+  const { email, password, role, personalHealthNumber } = this.form.value;
+
+  this.auth
+    .register(email, password, role, personalHealthNumber)
+    .subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/']);
@@ -57,5 +60,5 @@ export class RegisterComponent {
         this.error = err.error?.message || 'Registration failed';
       }
     });
-  }
+}
 }
