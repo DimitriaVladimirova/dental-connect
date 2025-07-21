@@ -568,75 +568,112 @@
         return value;
     }
 
-    // ---------- Auth Plugin ----------
+        // ---------- Auth Plugin ----------
     const { ConflictError: ConflictError$1, CredentialError: CredentialError$1, RequestError: RequestError$2 } = errors;
     function initAuth(settings) {
         const identity = settings.identity;
         return function decorateContext(context, request) {
             context.auth = { register, login, logout };
+
+            // restore user from token if present
             const userToken = request.headers['x-authorization'];
             if (userToken !== undefined) {
-                let user;
                 const session = findSessionByToken(userToken);
-                if (session !== undefined) {
+                if (session) {
                     const userData = context.protectedStorage.get('users', session.userId);
-                    if (userData !== undefined) user = userData;
+                    if (userData) {
+                        context.user = userData;
+                    }
                 }
-                if (user !== undefined) {
-                    context.user = user;
-                } else {
+                if (!context.user) {
                     throw new CredentialError$1('Invalid access token');
                 }
             }
+
+            // REGISTER: require email, password, role
             function register(body) {
-                if (!body[identity] || !body.password) throw new RequestError$2('Missing fields');
+                if (!body[identity] || !body.password || !body.role) {
+                    throw new RequestError$2('Missing fields: email, password and role are required');
+                }
+                // ensure unique email
                 if (context.protectedStorage.query('users', { [identity]: body[identity] }).length !== 0) {
-                    throw new ConflictError$1(`A user with the same ${identity} already exists`);
+                    throw new ConflictError$1(`A user with email "${body[identity]}" already exists`);
                 }
-                const newUser = Object.assign({}, body, {
-                    [identity]: body[identity],
-                    hashedPassword: hash(body.password)
-                });
-                const result = context.protectedStorage.add('users', newUser);
-                delete result.hashedPassword;
-                const session = saveSession(result._id);
-                result.accessToken = session.accessToken;
-                return result;
+
+                // build user record
+                const record = {
+                    [identity]:      body[identity],
+                    hashedPassword:  hash(body.password),
+                    role:            body.role, // 'dentist' or 'patient'
+                    // if dentist, include health number
+                    ...(body.role === 'dentist' && body.personalHealthNumber
+                      ? { personalHealthNumber: body.personalHealthNumber }
+                      : {})
+                };
+
+                // save and sanitize
+                const saved = context.protectedStorage.add('users', record);
+                delete saved.hashedPassword;
+
+                // create session/token
+                const session = saveSession(saved._id);
+
+                // return exactly what client needs
+                return {
+                    _id:         saved._id,
+                    email:       saved[identity],
+                    role:        saved.role,
+                    accessToken: session.accessToken
+                };
             }
+
+            // LOGIN: verify credentials and return user + role + token
             function login(body) {
-                const targetUser = context.protectedStorage.query('users', { [identity]: body[identity] });
-                if (targetUser.length == 1 && hash(body.password) === targetUser[0].hashedPassword) {
-                    const result = targetUser[0];
-                    delete result.hashedPassword;
-                    const session = saveSession(result._id);
-                    result.accessToken = session.accessToken;
-                    return result;
-                } else {
-                    throw new CredentialError$1('Login or password don\'t match');
+                const found = context.protectedStorage.query('users', { [identity]: body[identity] });
+                if (found.length !== 1 || hash(body.password) !== found[0].hashedPassword) {
+                    throw new CredentialError$1('Login or password don’t match');
                 }
+
+                const saved = found[0];
+                delete saved.hashedPassword;
+
+                const session = saveSession(saved._id);
+
+                return {
+                    _id:         saved._id,
+                    email:       saved[identity],
+                    role:        saved.role,
+                    accessToken: session.accessToken
+                };
             }
+
+            // LOGOUT: delete session for current user
             function logout() {
-                if (context.user) {
-                    const session = findSessionByUserId(context.user._id);
-                    if (session) context.protectedStorage.delete('sessions', session._id);
-                } else {
+                if (!context.user) {
                     throw new CredentialError$1('User session does not exist');
                 }
+                const session = findSessionByUserId(context.user._id);
+                if (session) {
+                    context.protectedStorage.delete('sessions', session._id);
+                }
             }
+
+            // Helpers
             function saveSession(userId) {
                 let session = context.protectedStorage.add('sessions', { userId });
                 const accessToken = hash(session._id);
                 session = context.protectedStorage.set('sessions', session._id, Object.assign({ accessToken }, session));
                 return session;
             }
-            function findSessionByToken(userToken) {
-                return context.protectedStorage.query('sessions', { accessToken: userToken })[0];
+            function findSessionByToken(token) {
+                return context.protectedStorage.query('sessions', { accessToken: token })[0];
             }
             function findSessionByUserId(userId) {
                 return context.protectedStorage.query('sessions', { userId })[0];
             }
         };
     }
+
 
     const secret = 'This is not a production server';
     function hash(string) { const h = crypto__default['default'].createHmac('sha256', secret); h.update(string); return h.digest('hex'); }
