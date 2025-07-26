@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { ApiService } from './api.service';
-
-export interface User {
-  _id: string;
-  email: string;
-  accessToken: string;
-  role?: 'dentist' | 'patient';
-}
+import { User } from '../../models/user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -24,28 +18,27 @@ export class AuthService {
   isLoggedIn(): boolean { return !!this.user?.accessToken; }
 
   register(
-  email: string,
-  password: string,
-  role: 'dentist' | 'patient',
-  personalHealthNumber?: string
-) {
-  return this.api.post<User>('/users/register', {
-    email,
-    password,
-    role,
-    // only send health number for dentists
-    ...(role === 'dentist' && personalHealthNumber
+    email: string,
+    password: string,
+    role: 'dentist' | 'patient',
+    personalHealthNumber?: string
+  ) {
+    return this.api.post<User>('/users/register', {
+      email,
+      password,
+      role,
+      ...(role === 'dentist' && personalHealthNumber
       ? { personalHealthNumber }
       : {})
-  }).pipe(
-    tap(user => this.setUser(user))
+   }).pipe(
+      tap(user => this.setUser(user))
   );
 }
 
   login(email: string, password: string) {
-  return this.api.post<User>('/users/login', { email, password }).pipe(
-    tap(u => this.setUser(u))
-  );
+    return this.api.post<User>('/users/login', { email, password }).pipe(
+      tap(u => this.setUser(u))
+    );
 }
 
   logout() {

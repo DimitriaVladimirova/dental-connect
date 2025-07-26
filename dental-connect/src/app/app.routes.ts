@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-    { path: '', loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent) },
+    { path: '', loadComponent: () => import('./shared/layout/home/home.component').then(m => m.HomeComponent) },
     { path: 'login', loadComponent: () => import('./features/auth/login/login').then(m => m.LoginComponent) },
     { path: 'register', loadComponent: () => import('./features/auth/register/register').then(m => m.RegisterComponent) },
     {
@@ -10,10 +10,22 @@ export const routes: Routes = [
       import('./features/dentists/list/dentists-list')
         .then(m => m.DentistsListComponent)
     },
-    { path: 'dentist/profile',
+    { path: 'dentist/profile/create',
     loadComponent: () =>
     import('./features/dentists/profile/dentist-profile-form')
       .then(m => m.DentistProfileFormComponent)
+  },
+    {
+    path: 'dentists/profile',
+    loadComponent: () =>
+      import('./features/dentists/profile/my-profile/my-profile')
+        .then(m => m.MyProfile),
+  },
+  {
+    path: 'dentists/profile/edit',
+    loadComponent: () =>
+      import('./features/dentists/profile/dentist-profile-form')
+        .then(m => m.DentistProfileFormComponent),
   },
   {  path: 'dentists/:id',
     loadComponent: () =>

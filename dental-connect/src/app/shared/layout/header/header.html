@@ -11,7 +11,7 @@
     <a routerLink="/dentists" routerLinkActive="active">Dentists</a>
     <a routerLink="/promotions" routerLinkActive="active">Promotions</a>
 
-    <a *ngIf="isDentist()" routerLink="/dentist/profile" routerLinkActive="active">My Profile</a>
+   <a *ngIf="auth.isLoggedIn() && auth.role==='dentist'" routerLink="/dentists/profile" routerLinkActive="active"> My Profile</a>
     <a *ngIf="isDentist()" routerLink="/promotions/create" routerLinkActive="active">Add Promotion</a>
 
     <span class="spacer"></span>

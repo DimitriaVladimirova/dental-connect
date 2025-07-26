@@ -11,7 +11,7 @@ import { AuthService } from '../../../core/services/auth.service';
   imports: [RouterLink, RouterLinkActive, NgIf, AsyncPipe]
 })
 export class HeaderComponent {
-  private auth = inject(AuthService);
+  public auth = inject(AuthService);
   private router = inject(Router);
 
   user$ = this.auth.user$;

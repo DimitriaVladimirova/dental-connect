@@ -19,11 +19,11 @@ export class PromotionsService {
     return this.api.get<Promotion[]>(`/data/promotions?where=${where}`);
   }
 
-  listByDentistClient(dentistId: string): Observable<Promotion[]> {
-    return this.list().pipe(
-      map(arr => arr.filter(p => p.dentistId === dentistId))
-    );
-  }
+  // listByDentistClient(dentistId: string): Observable<Promotion[]> {
+  //   return this.list().pipe(
+  //     map(arr => arr.filter(p => p.dentistId === dentistId))
+  //   );
+  // }
 
   getOne(id: string): Observable<Promotion> {
     return this.api.get<Promotion>(`/data/promotions/${id}`);

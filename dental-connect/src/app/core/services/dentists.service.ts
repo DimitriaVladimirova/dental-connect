@@ -16,11 +16,11 @@ export class DentistsService {
   }
 
   create(profile: Partial<DentistProfile>): Observable<DentistProfile> {
-  return this.api.post<DentistProfile>('/data/dentists', profile);
+    return this.api.post<DentistProfile>('/data/dentists', profile);
 }
 
-update(id: string, profile: Partial<DentistProfile>): Observable<DentistProfile> {
-  return this.api.put<DentistProfile>(`/data/dentists/${id}`, profile);
+  update(id: string, profile: Partial<DentistProfile>): Observable<DentistProfile> {
+    return this.api.put<DentistProfile>(`/data/dentists/${id}`, profile);
 }
 
   delete(id: string) {
@@ -39,8 +39,17 @@ update(id: string, profile: Partial<DentistProfile>): Observable<DentistProfile>
         if (existing && existing._id) {
           return this.update(existing._id, { ...existing, ...data });
         }
-        // new profile
         return this.create({ ...data });
+      })
+    );
+  }
+
+    deleteProfile(ownerId: string) {
+      return this.loadMine(ownerId).pipe(
+        switchMap(profile => {
+        if (!profile?._id) throw new Error('No profile found');
+     
+        return this.delete(profile._id).pipe(map(() => void 0));
       })
     );
   }

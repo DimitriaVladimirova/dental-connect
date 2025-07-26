@@ -1,0 +1,14 @@
+<ng-container *ngIf="loading()">Loading…</ng-container>
+<div *ngIf="error()">{{ error() }}</div>
+<div *ngIf="!loading() && !error() && profile()">
+  <h2>{{ profile()?.fullName }}</h2>
+  <img *ngIf="profile()?.imageUrl" [src]="profile()!.imageUrl" alt="Profile image">
+  <p><strong>University:</strong> {{ profile()?.university }}</p>
+  <p><strong>Workplace:</strong> {{ profile()?.workplace }}</p>
+  <p><strong>Specialization:</strong> {{ profile()?.specialization }}</p>
+  <p><strong>Phone:</strong> {{ profile()?.phone }}</p>
+  <p><strong>About:</strong> {{ profile()?.details }}</p>
+  <button *ngIf="isOwner()" (click)="onEdit()">Edit</button>
+  <button *ngIf="isOwner()" (click)="onDelete()">Delete</button>
+</div>
+

@@ -29,7 +29,7 @@
 
         <div class="actions">
           <a routerLink="/dentists" class="btn secondary">Back to List</a>
-          <a *ngIf="isOwner()" routerLink="/dentist/profile" class="btn primary">Edit My Profile</a>
+          <!-- <a *ngIf="isOwner()" routerLink="/dentist/profile" class="btn primary">Edit My Profile</a> -->
           <a [routerLink]="['/promotions']"
              [queryParams]="{ dentist: d._id }"
              class="btn outline">

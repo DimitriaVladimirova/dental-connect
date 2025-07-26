@@ -81,7 +81,7 @@ export class DentistProfileFormComponent implements OnInit {
     this.dentists.upsertMine(user._id, this.form.value).subscribe({
       next: saved => {
         this.saving.set(false);
-        this.router.navigate(['/dentists']); // later: /dentists/${saved._id}
+        this.router.navigate(['/profile']);
       },
       error: err => {
         this.error.set(err.error?.message || 'Save failed');
