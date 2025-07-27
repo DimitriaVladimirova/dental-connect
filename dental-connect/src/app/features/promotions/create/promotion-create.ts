@@ -71,7 +71,7 @@ export class PromotionCreate implements OnInit {
     if (this.saving() || this.loadingProfile()) return;
 
     if (!this.isDentist()) {
-      this.error.set('Only logged-in dentists can create promotions.');
+      this.error.set('Only dentists can create promotions.');
       return;
     }
 

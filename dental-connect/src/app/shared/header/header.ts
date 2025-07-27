@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { NgIf, CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { AuthService } from '../../core/services/auth.service';
   selector: 'app-header',
   templateUrl: './header.html',
   styleUrls: ['./header.css'],
-  imports: [ CommonModule, RouterLink, RouterLinkActive ]})
+  imports: [ CommonModule, RouterLink, NgIf, RouterLinkActive ]})
 
 export class HeaderComponent {
   protected auth = inject(AuthService);

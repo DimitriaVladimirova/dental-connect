@@ -37,8 +37,12 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.api.post<User>('/users/login', { email, password }).pipe(
-      tap(u => this.setUser(u))
-    );
+      tap(u => {
+  const existing = this.user;
+  const role = u.role ?? existing?.role;
+  this.setUser({ ...u, role })
+  })
+)
 }
 
   logout() {
