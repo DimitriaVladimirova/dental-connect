@@ -1,13 +1,14 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DentistsService } from '../../../../core/services/dentists.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { DentistProfile } from '../../../../models/dentist';
+import { DentistProfileFormComponent } from '../dentist-profile-form';
 
 @Component({
   selector: 'app-my-profile',
-  imports: [CommonModule],
+  imports: [CommonModule, DentistProfileFormComponent],
   templateUrl: './my-profile.html',
   styleUrl: './my-profile.css'
 })
@@ -36,11 +37,7 @@ export class MyProfile implements OnInit{
 
     this.dentists.loadMine(u._id).subscribe({
       next: p => {
-        if (p) {
-          this.profile.set(p);
-        } else {
-          this.router.navigate(['/profile/edit']);
-        }
+        this.profile.set(p);
         this.loading.set(false);
       },
       error: e => {
@@ -57,7 +54,7 @@ export class MyProfile implements OnInit{
   onDelete() {
     const p = this.profile();
     if (!p?._id) return;
-    if (!confirm('Delete your profile?')) return;
+    if (!p?._id || !confirm('Delete your profile?')) return;
     this.dentists.delete(p._id).subscribe({
       next: () => {
         this.auth.logout();
