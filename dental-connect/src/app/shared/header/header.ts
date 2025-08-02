@@ -14,8 +14,12 @@ export class HeaderComponent {
   protected auth = inject(AuthService);
   private router = inject(Router);
   user$ = this.auth.user$;
-  isDentist = computed(() => this.auth.isLoggedIn() && this.auth.role === 'dentist');
-
+  
+  isDentist = computed(() => {
+    const user = this.auth.user;
+    return !!user && user.role === 'dentist';
+  });
+  
   logout(): void {
     this.auth.logout();
     this.router.navigate(['/']);

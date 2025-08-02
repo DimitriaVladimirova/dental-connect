@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
+import { DentistsService } from '../../../core/services/dentists.service';
 
 @Component({
   standalone: true,
@@ -19,7 +20,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private dentistsService: DentistsService
   ) {
     this.form = this.fb.group({
       role: ['patient', Validators.required],
@@ -42,22 +44,33 @@ export class RegisterComponent {
   }
 
   submit() {
-  if (this.form.invalid) return;
-  this.loading = true;
-  this.error = '';
+    if (this.form.invalid) return;
+    this.loading = true;
+    this.error = '';
 
   const { email, password, role, personalHealthNumber } = this.form.value;
 
   this.auth
     .register(email, password, role, personalHealthNumber)
     .subscribe({
-      next: () => {
-        this.loading = false;
-        this.router.navigate(['/']);
+      next: user => {
+        if (role === 'dentist') {
+          this.dentistsService
+            .upsertMine(user._id, { personalHealthNumber })
+            .subscribe({
+              next: () => this.router.navigateByUrl('/dentists/profile/create'),
+              error: err => {
+                this.error = 'Dentist profile creation failed';
+                this.loading = false;
+              }
+            });
+        } else {
+          this.router.navigateByUrl('/');
+        }
       },
       error: err => {
+        this.error = 'Registration failed';
         this.loading = false;
-        this.error = err.error?.message || 'Registration failed';
       }
     });
 }

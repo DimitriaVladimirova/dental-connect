@@ -12,9 +12,10 @@
     </a>
     <a routerLink="/dentists" routerLinkActive="active">Dentists</a>
     <a routerLink="/promotions" routerLinkActive="active">Promotions</a>
-    <a *ngIf="isDentist()" routerLink="/dentists/profile" routerLinkActive="active">My Profile</a>
-    <a *ngIf="isDentist()" routerLink="/promotions/create" routerLinkActive="active">Add Promotion</a>
-
+    <ng-container *ngIf="user$ | async as user">
+      <a *ngIf="user.role === 'dentist'" routerLink="/dentists/profile" routerLinkActive="active">My Profile</a>
+      <a *ngIf="user.role === 'dentist'" routerLink="/promotions/create" routerLinkActive="active">Add Promotion</a>
+    </ng-container>
     <span class="spacer"></span>
     <span class="welcome">Hi, {{ user.email }}</span>
     <button class="logout" (click)="logout()">Logout</button>

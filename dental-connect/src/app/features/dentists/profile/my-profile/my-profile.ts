@@ -13,7 +13,7 @@ import { DentistProfileFormComponent } from '../dentist-profile-form';
   styleUrl: './my-profile.css'
 })
 export class MyProfile implements OnInit{
- private auth = inject(AuthService);
+  private auth = inject(AuthService);
   private router = inject(Router);
   private dentists = inject(DentistsService);
 

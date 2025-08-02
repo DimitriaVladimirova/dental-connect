@@ -370,6 +370,11 @@
         validateRequest(context, tokens);
         if (tokens.length > 0) throw new RequestError$1('Use PUT to update records');
         context.canAccess(undefined, body);
+
+        if (!context.user?._id) {
+        throw new AuthorizationError$1('You must be logged in to create a resource');
+        }
+
         body._ownerId = context.user._id;
         let responseData;
         try {

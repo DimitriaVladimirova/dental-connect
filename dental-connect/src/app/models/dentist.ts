@@ -8,6 +8,7 @@ export interface DentistProfile {
   imageUrl?: string;
   details?: string;
   phone?: string;
+  personalHealthNumber?: string;
   _createdOn?: number;
   _updatedOn?: number;
 }

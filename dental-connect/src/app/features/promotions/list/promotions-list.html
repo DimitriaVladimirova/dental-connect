@@ -27,6 +27,11 @@
       </div>
 
       <div class="line">
+        <span class="label">Created On:</span>
+        <span class="value">{{ p._createdOn | date: 'mediumDate' }}</span>
+      </div>
+
+      <div class="line">
         <span class="label">Dentist:</span>
         <span class="value">
           <a *ngIf="dentistProfileLink(p); else noLink"
@@ -39,7 +44,7 @@
 
       <div class="buttons">
         
-        <button *ngIf="isLoggedIn()" (click)="buy(p)" class="btn small">Buy</button>
+        <button *ngIf="isLoggedIn() && !isDentist()" (click)="buy(p)" class="btn small">Buy</button>
 
         <button
           *ngIf="isDentist() && p._ownerId === auth.user?._id"
