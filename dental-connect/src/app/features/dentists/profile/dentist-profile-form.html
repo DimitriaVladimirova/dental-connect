@@ -1,5 +1,5 @@
 <section class="profile-form">
-  <h2>{{ mode() }} Dentist Profile</h2>
+  <h2>Create / Edit Dentist Profile</h2>
 
   <div *ngIf="loading()">Loading...</div>
   <div class="error" *ngIf="error()">{{ error() }}</div>
@@ -25,7 +25,7 @@
 
     <div class="actions">
       <button type="submit" [disabled]="saving()">
-        {{ saving() ? 'Saving...' : (mode() + ' Profile') }}
+        {{ saving() ? 'Saving...' : ('Save' + ' Profile') }}
       </button>
     </div>
   </form>
