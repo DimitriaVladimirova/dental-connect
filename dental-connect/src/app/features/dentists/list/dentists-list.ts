@@ -9,6 +9,7 @@ import { DentistsService } from '../../../core/services/dentists.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { RouterLink } from '@angular/router';
 import { DentistProfile } from '../../../models/dentist';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   standalone: true,
@@ -16,7 +17,15 @@ import { DentistProfile } from '../../../models/dentist';
   templateUrl: './dentists-list.html',
   styleUrls: ['./dentists-list.css'],
   imports: [CommonModule, RouterLink],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ transform: 'translateY(-20px)', opacity: 0 }),
+        animate('300ms ease-out', style({ transform: 'translateY(0)', opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class DentistsListComponent {
 

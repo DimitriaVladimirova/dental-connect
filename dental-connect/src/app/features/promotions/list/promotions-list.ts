@@ -6,6 +6,7 @@ import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Promotion } from "../../../models/promotion";
 import { DentistsService } from "../../../core/services/dentists.service";
 import { DentistProfile } from "../../../models/dentist";
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
     standalone:true,
@@ -13,7 +14,15 @@ import { DentistProfile } from "../../../models/dentist";
     templateUrl: 'promotions-list.html',
     styleUrls: ['promotions-list.css'],
     imports: [CommonModule, RouterLink],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ transform: 'translateY(-20px)', opacity: 0 }),
+        animate('300ms ease-out', style({ transform: 'translateY(0)', opacity: 1 }))
+      ])
+    ])
+  ]
 })
 
 export class PromotionsListComponent {

@@ -16,7 +16,7 @@
   </div>
 
   <ul *ngIf="!loading() && !error() && dentists().length > 0" class="cards">
-    <li *ngFor="let d of dentists(); trackBy: trackById" class="card">
+    <li *ngFor="let d of dentists(); trackBy: trackById" class="card" [@slideIn]>
       <div class="img-wrap" *ngIf="d.imageUrl">
         <img [src]="d.imageUrl" [alt]="d.fullName" loading="lazy">
       </div>

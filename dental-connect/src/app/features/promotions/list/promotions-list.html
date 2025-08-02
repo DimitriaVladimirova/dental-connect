@@ -9,7 +9,7 @@
   </div>
 
   <ul class="promo-list" *ngIf="!loading() && filtered().length">
-    <li *ngFor="let p of filtered()" class="promo-item">
+    <li *ngFor="let p of filtered()" class="promo-item" [@slideIn]>
 
       <div class="line">
         <span class="label">Service:</span>
