@@ -1,5 +1,5 @@
 <section class="promo-create">
-  <h2>Add Promotion</h2>
+  <h2>{{ isEditMode() ? 'Edit Promotion' : 'Create Promotion' }}</h2>
 
   <div *ngIf="error()" class="alert error">
     {{ error() }}
@@ -34,13 +34,8 @@
       <textarea rows="4" formControlName="description"></textarea>
     </div>
 
-    <!-- <div class="meta">
-      Linked to your profile ID:
-      <code>{{ profileId() }}</code>
-    </div> -->
-
     <div class="actions">
-      <button type="submit" [disabled]="saving()">Create</button>
+      <button type="submit" [disabled]="saving()">Save</button>
       <a routerLink="/promotions" class="cancel">Cancel</a>
     </div>
 

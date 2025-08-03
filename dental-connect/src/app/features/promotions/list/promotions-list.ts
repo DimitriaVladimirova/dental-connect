@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, signal, computed, inject } from "@a
 import { CommonModule } from "@angular/common";
 import { PromotionsService } from "../../../core/services/promotions.service";
 import { AuthService } from "../../../core/services/auth.service";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute, RouterLink, Router } from "@angular/router";
 import { Promotion } from "../../../models/promotion";
 import { DentistsService } from "../../../core/services/dentists.service";
 import { DentistProfile } from "../../../models/dentist";
@@ -30,6 +30,7 @@ export class PromotionsListComponent {
   private dentistsSvc = inject(DentistsService);
   protected auth = inject(AuthService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router)
 
   loading = signal(true);
   error = signal<string | null>(null);
@@ -125,6 +126,10 @@ export class PromotionsListComponent {
     return;
   }
   alert('You just bought this dental service. Please contact the dentist.');
+}
+
+  editPromotion(p: Promotion) {
+    this.router.navigate(['/promotions', p._id, 'edit']);
 }
 
   deletePromotion(p: Promotion) {

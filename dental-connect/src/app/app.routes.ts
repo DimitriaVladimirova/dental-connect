@@ -63,9 +63,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/promotions/create/promotion-create')
         .then(m => m.PromotionCreate),
-        canActivate: [ authGuard]
+        canActivate: [ authGuard ]
 },
-
+{
+    path: 'promotions/:id/edit',
+    loadComponent: () =>
+      import('./features/promotions/create/promotion-create')
+        .then(m => m.PromotionCreate),
+        canActivate: [ authGuard ] 
+},
 
    { path: '**', 
     loadComponent: () =>

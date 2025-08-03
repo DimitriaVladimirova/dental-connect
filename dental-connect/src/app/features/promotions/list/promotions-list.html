@@ -46,11 +46,14 @@
         
         <button *ngIf="isLoggedIn() && !isDentist()" (click)="buy(p)" class="btn small">Buy</button>
 
-        <button
-          *ngIf="isDentist() && p._ownerId === auth.user?._id"
-          (click)="deletePromotion(p)"
-          class="btn danger small">
-          Delete
+        <a *ngIf="isDentist() && p._ownerId === auth.user?._id"
+            [routerLink]="['/promotions', p._id, 'edit']"
+            class="btn small">Edit</a>
+
+        <button *ngIf="isDentist() && p._ownerId === auth.user?._id"
+            (click)="deletePromotion(p)"
+            class="btn danger small">
+            Delete
         </button>
       </div>
 
