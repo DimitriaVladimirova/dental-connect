@@ -22,26 +22,26 @@ export class MyProfile implements OnInit{
   profile = signal<DentistProfile|null>(null);
 
   isOwner = computed(() => {
-    const d = this.profile();
-    const u = this.auth.user;
-    return !!d && !!u && d._ownerId === u._id;
+    const dentist = this.profile();
+    const user = this.auth.user;
+    return !!dentist && !!user && dentist._ownerId === user._id;
   });
 
   ngOnInit() {
-    const u = this.auth.user;
-    if (!u || this.auth.role !== 'dentist') {
+    const user = this.auth.user;
+    if (!user || this.auth.role !== 'dentist') {
       this.error.set('Only dentists may view this page.');
       this.loading.set(false);
       return;
     }
 
-    this.dentists.loadMine(u._id).subscribe({
-      next: p => {
-        this.profile.set(p);
+    this.dentists.loadMine(user._id).subscribe({
+      next: profile => {
+        this.profile.set(profile);
         this.loading.set(false);
       },
-      error: e => {
-        this.error.set(e.error?.message || 'Could not load profile');
+      error: err => {
+        this.error.set(err.error?.message || 'Could not load profile');
         this.loading.set(false);
       }
     });
@@ -52,15 +52,15 @@ export class MyProfile implements OnInit{
   }
 
   onDelete() {
-    const p = this.profile();
-    if (!p?._id) return;
-    if (!p?._id || !confirm('Delete your profile?')) return;
-    this.dentists.delete(p._id).subscribe({
+    const profile = this.profile();
+    if (!profile?._id) return;
+    if (!profile?._id || !confirm('Delete your profile?')) return;
+    this.dentists.delete(profile._id).subscribe({
       next: () => {
         this.auth.logout();
         this.router.navigate(['/']);
       },
-      error: e => alert(e.error?.message || 'Delete failed')
+      error: err => alert(err.error?.message || 'Delete failed')
     });
   }
 }

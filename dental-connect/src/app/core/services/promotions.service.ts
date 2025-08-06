@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Promotion } from '../../models/promotion';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
 type PromotionCreate = Omit<Promotion, '_id' | '_ownerId' | '_createdOn' | '_updatedOn'>;
 type PromotionUpdate = Omit<Promotion, '_ownerId' | '_createdOn' | '_updatedOn'>;
@@ -35,5 +35,20 @@ export class PromotionsService {
 
   delete(id: string): Observable<unknown> {
     return this.api.delete(`/data/promotions/${id}`);
+  }
+
+  createPurchase(data: {
+    promotionId: string;
+    dentistId: string;
+    buyerId: string;
+    timestamp: number;
+  }) 
+  {
+    return this.api.post('/data/purchases', data);
+  }
+
+  getPurchasesByDentist(dentistId: string): Observable<Promotion[]> {
+    const where = encodeURIComponent(`dentistId="${dentistId}"`);
+    return this.api.get<any[]>(`/data/purchases?where=${where}`);
   }
 }

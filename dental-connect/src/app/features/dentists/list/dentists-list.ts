@@ -55,7 +55,7 @@ export class DentistsListComponent {
     });
   }
 
-  trackById = (_: number, d: DentistProfile) => d._id;
+  trackById = (_: number, dentist: DentistProfile) => dentist._id;
 
   isDentistLoggedIn() {
     return this.auth.isLoggedIn() && this.auth.role === 'dentist';

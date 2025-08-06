@@ -29,7 +29,7 @@ export class DentistsService {
   
    loadMine(ownerId: string) {
     return this.list().pipe(
-    map(list => list.find(d => d._ownerId === ownerId) || null)
+    map(list => list.find(dentist => dentist._ownerId === ownerId) || null)
   );
 }
 

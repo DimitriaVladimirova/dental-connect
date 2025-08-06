@@ -37,10 +37,10 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.api.post<User>('/users/login', { email, password }).pipe(
-      tap(u => {
+      tap(users => {
   const existing = this.user;
-  const role = u.role ?? existing?.role;
-  this.setUser({ ...u, role })
+  const role = users.role ?? existing?.role;
+  this.setUser({ ...users, role })
   })
 )
 }
@@ -64,9 +64,9 @@ export class AuthService {
   return this.user?.role;
 }
 
-  private setUser(u: User) {
-    localStorage.setItem('user', JSON.stringify(u));
-    this.userSubject.next(u);
+  private setUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.userSubject.next(user);
   }
 
   private clearUser() {

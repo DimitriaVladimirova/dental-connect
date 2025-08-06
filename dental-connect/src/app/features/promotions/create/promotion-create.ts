@@ -90,8 +90,8 @@ export class PromotionCreate implements OnInit {
   }
 
   fieldInvalid(name: string) {
-    const c = this.form.get(name);
-    return !!c && c.touched && c.invalid;
+    const field = this.form.get(name);
+    return !!field && field.touched && field.invalid;
   }
 
   submit() {

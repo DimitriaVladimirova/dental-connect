@@ -38,8 +38,8 @@ export class PromotionsListComponent {
   all = signal<Promotion[]>([]);
   dentistProfiles = signal<DentistProfile[]>([]);
   dentistNameMap = computed(() =>
-    this.dentistProfiles().reduce<Record<string, DentistProfile>>((acc, d) => {
-      if (d._id) acc[d._id] = d;
+    this.dentistProfiles().reduce<Record<string, DentistProfile>>((acc, dentist) => {
+      if (dentist._id) acc[dentist._id] = dentist;
       return acc;
     }, {})
   );
@@ -49,7 +49,7 @@ export class PromotionsListComponent {
   filtered = computed(() => {
     const id = this.dentistFilter();
     const list = this.all();
-    return id ? list.filter(p => p.dentistId === id) : list;
+    return id ? list.filter(promotion => promotion.dentistId === id) : list;
   });
 
   constructor() {
@@ -106,35 +106,51 @@ export class PromotionsListComponent {
     return this.auth.isLoggedIn() && this.auth.role === 'dentist';
   }
 
-  dentistName(p: Promotion): string {
-    const profile = this.dentistNameMap()[p.dentistId];
+  dentistName(promotion: Promotion): string {
+    const profile = this.dentistNameMap()[promotion.dentistId];
     return profile?.fullName || 'Unknown dentist';
   }
 
-  dentistProfileLink(p: Promotion): string | null {
-    const profile = this.dentistNameMap()[p.dentistId];
+  dentistProfileLink(promotion: Promotion): string | null {
+    const profile = this.dentistNameMap()[promotion.dentistId];
     return profile?._id ? `/dentists/${profile._id}` : null;
   }
 
-  buy(p: Promotion) {
-  if (!this.isLoggedIn()) {
-    alert('Please log in to buy promotions.');
-    return;
-  }
-  if (this.isDentist() && p._ownerId === this.auth.user?._id) {
-    alert('You cannot buy your own promotion.');
-    return;
-  }
-  alert('You just bought this dental service. Please contact the dentist.');
-}
+  buy(promotion: Promotion) {
+    if (!this.isLoggedIn()) {
+      alert('Please log in to buy promotions.');
+      return;
+    }
 
-  editPromotion(p: Promotion) {
-    this.router.navigate(['/promotions', p._id, 'edit']);
-}
+    if (this.isDentist() && promotion._ownerId === this.auth.user?._id) {
+      alert('You cannot buy your own promotion.');
+      return;
+    }
 
-  deletePromotion(p: Promotion) {
+    const payload = {
+      promotionId: promotion._id!,
+      dentistId: promotion.dentistId,
+      buyerId: this.auth.user!._id,
+      timestamp: Date.now()
+    };
+
+    this.promos.createPurchase(payload).subscribe({
+      next: () => {
+        alert('You just bought this dental service. Please contact the dentist.');
+      },
+      error: err => {
+        alert(err.error?.message || 'Purchase failed');
+      }
+    });
+  }
+
+  editPromotion(promotion: Promotion) {
+    this.router.navigate(['/promotions', promotion._id, 'edit']);
+  }
+
+  deletePromotion(promotion: Promotion) {
     if (!confirm('Delete this promotion?')) return;
-    this.promos.delete(p._id!).subscribe({
+    this.promos.delete(promotion._id!).subscribe({
       next: () => this.fetch(),
       error: err => alert(err.error?.message || 'Delete failed')
     });

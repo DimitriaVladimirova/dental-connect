@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DentistsService } from '../../../core/services/dentists.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { PromotionsService } from '../../../core/services/promotions.service';
 import { DentistProfile } from '../../../models/dentist';
 
 @Component({
@@ -17,15 +18,17 @@ export class DentistDetailsComponent {
   private route = inject(ActivatedRoute);
   private dentists = inject(DentistsService);
   protected auth = inject(AuthService);
+  private promos = inject(PromotionsService);
 
   loading = signal(true);
   error = signal<string | null>(null);
   dentist = signal<DentistProfile | null>(null);
+  totalPurchases = signal(0);
 
   isOwner = computed(() => {
-    const d = this.dentist();
-    const u = this.auth.user;
-    return !!d && !!u && d._ownerId === u._id;
+    const dentist = this.dentist();
+    const user = this.auth.user;
+    return !!dentist && !!user && dentist._ownerId === user._id;
   });
 
   constructor() {
@@ -42,11 +45,12 @@ export class DentistDetailsComponent {
     this.loading.set(true);
     this.error.set(null);
     this.dentists.getOne(id).subscribe({
-      next: d => {
-        if (!d) {
+      next: dentist => {
+        if (!dentist) {
           this.error.set('Dentist not found.');
         } else {
-          this.dentist.set(d);
+          this.dentist.set(dentist);
+          this.loadPurchases();
         }
         this.loading.set(false);
       },
@@ -54,6 +58,14 @@ export class DentistDetailsComponent {
         this.error.set(err.error?.message || 'Failed to load dentist');
         this.loading.set(false);
       }
+    });
+  }
+
+  loadPurchases() {
+    const dentistId = this.route.snapshot.paramMap.get('id')!;
+    this.promos.getPurchasesByDentist(dentistId).subscribe({
+      next: purchases => this.totalPurchases.set(purchases.length),
+      error: err => console.warn('Failed to load purchases', err)
     });
   }
 }

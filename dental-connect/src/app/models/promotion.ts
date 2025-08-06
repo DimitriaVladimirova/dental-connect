@@ -7,4 +7,5 @@ export interface Promotion {
   description?: string;
   _createdOn?: number;
   _updatedOn?: number;
+  purchases?: number;
 }
