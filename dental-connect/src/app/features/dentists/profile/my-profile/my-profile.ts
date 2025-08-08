@@ -1,10 +1,12 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { DentistsService } from '../../../../core/services/dentists.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { DentistProfile } from '../../../../models/dentist';
 import { DentistProfileFormComponent } from '../dentist-profile-form';
+import { PromotionsService } from '../../../../core/services/promotions.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-my-profile',
@@ -16,6 +18,7 @@ export class MyProfile implements OnInit{
   private auth = inject(AuthService);
   private router = inject(Router);
   private dentists = inject(DentistsService);
+  private promotions = inject(PromotionsService);
 
   loading = signal(true);
   error   = signal<string|null>(null);
@@ -54,13 +57,32 @@ export class MyProfile implements OnInit{
   onDelete() {
     const profile = this.profile();
     if (!profile?._id) return;
-    if (!profile?._id || !confirm('Delete your profile?')) return;
-    this.dentists.delete(profile._id).subscribe({
-      next: () => {
-        this.auth.logout();
-        this.router.navigate(['/']);
+
+    if (!profile?._id || !confirm('Delete your profile? This will also delete all your promotions.')) return;
+    
+    this.promotions.listByDentist(profile._id).subscribe({
+      next: promotions => {
+        const deleteProfile = () => {
+          this.dentists.delete(profile._id!).subscribe({
+              next: () => {
+              this.router.navigate(['/']);
+              },
+              error: err => alert(err.error?.message || 'Delete profile failed')
+          })
+        }
+      
+        if(!promotions.length) {
+          deleteProfile();
+          return;
+        }
+        forkJoin(promotions.map(promo => this.promotions.delete(promo._id!))).subscribe({
+          next: () => deleteProfile(),
+          error: err => alert(err.error?.message || 'Delete promotions failed')
+        });
       },
-      error: err => alert(err.error?.message || 'Delete failed')
+        error: err => {
+        alert(err.error?.message || 'Could not load promotions to delete');
+      }
     });
   }
 }
