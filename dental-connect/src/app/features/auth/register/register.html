@@ -1,7 +1,8 @@
-<section class="auth-card">
+<section class="auth-card" [@slideIn]>
   <h2>Register</h2>
 
   <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+ 
     <fieldset class="roles">
       <label>
         <input type="radio" value="patient" formControlName="role" />
@@ -13,40 +14,73 @@
       </label>
     </fieldset>
 
-    <label>
-      <span>Email</span>
-      <input type="email" formControlName="email" />
-    </label>
-    <div class="err"
-         *ngIf="form.controls['email'].touched && form.controls['email'].invalid">
-      Enter a valid email.
-    </div>
+    <fieldset formGroupName="patient" *ngIf="!isDentist">
+      <label>
+        <span>Email</span>
+        <input type="email" formControlName="email" />
+      </label>
+      <div class="err"
+           *ngIf="patientGroup.controls['email'].touched && patientGroup.controls['email'].invalid">
+        Enter a valid email.
+      </div>
 
-    <label>
-      <span>Password</span>
-      <input type="password" formControlName="password" />
-    </label>
+      <label>
+        <span>Password</span>
+        <input type="password" formControlName="password" />
+      </label>
 
-    <label>
-      <span>Repeat Password</span>
-      <input type="password" formControlName="repass" />
-    </label>
-    <div class="err" *ngIf="form.errors?.['mismatch']">
-      Passwords do not match.
-    </div>
+      <label>
+        <span>Repeat Password</span>
+        <input type="password" formControlName="repass" />
+      </label>
+      <div class="err" *ngIf="patientGroup.errors?.['mismatch']">
+        Passwords do not match.
+      </div>
+    </fieldset>
 
-    <ng-container *ngIf="isDentist">
+    <fieldset formGroupName="dentist" *ngIf="isDentist">
+      <label>
+        <span>Email</span>
+        <input type="email" formControlName="email" />
+      </label>
+      <div class="err"
+           *ngIf="dentistGroup.controls['email'].touched && dentistGroup.controls['email'].invalid">
+        Enter a valid email.
+      </div>
+
+      <label>
+        <span>Password</span>
+        <input type="password" formControlName="password" />
+      </label>
+
+      <label>
+        <span>Repeat Password</span>
+        <input type="password" formControlName="repass" />
+      </label>
+      <div class="err" *ngIf="dentistGroup.errors?.['mismatch']">
+        Passwords do not match.
+      </div>
+
       <label>
         <span>Full Name</span>
         <input type="text" formControlName="fullName" />
       </label>
+      <div class="err"
+           *ngIf="dentistGroup.controls['fullName'].touched && dentistGroup.controls['fullName'].invalid">
+        Full name is required (letters and spaces only).
+      </div>
+
       <label>
         <span>Personal Health Number</span>
         <input type="text" formControlName="personalHealthNumber" />
       </label>
-    </ng-container>
+      <div class="err"
+           *ngIf="dentistGroup.controls['personalHealthNumber'].touched && dentistGroup.controls['personalHealthNumber'].invalid">
+        Health number is required (digits only).
+      </div>
+    </fieldset>
 
-    <button type="submit" [disabled]="form.invalid || loading">
+    <button type="submit" [disabled]="loading || form.invalid">
       {{ loading ? 'Registering...' : 'Register' }}
     </button>
 

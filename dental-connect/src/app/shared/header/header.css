@@ -3,11 +3,11 @@
   --brand-color: #1976d2;
   --brand-color-hover: #125ca5;
   --danger: #dc2626;
-  --danger-hover: #b91c1c;
-  --bg: #ffffff;
-  --border: #e3e8ee;
-  --text: #24313d;
-  --text-muted: #546170;
+  --danger-hover: #e79191;
+  --bg: #393B65;
+  --border: black;
+  --text: #1d232a;
+  --text-muted: #0f1215;
 
   position: sticky;
   top: 0;
@@ -28,7 +28,7 @@
   font-weight: 600;
   letter-spacing: .5px;
   text-decoration: none;
-  color: var(--text);
+  color: white;
   display: inline-flex;
   align-items: center;
   gap: .35rem;
@@ -53,7 +53,7 @@
   --pad-x: .75rem;
   --pad-y: .45rem;
   text-decoration: none;
-  color: var(--text-muted);
+  color: white;
   padding: var(--pad-y) var(--pad-x);
   border-radius: 6px;
   font-weight: 500;
@@ -64,26 +64,26 @@
 
 .nav a:hover,
 .nav a:focus-visible {
-  background: var(--brand-color);
+  background: #A294C7;
   color: #fff;
   outline: none;
 }
 
 .nav a.active {
-  background: var(--brand-color);
+  background: #A294C7;
   color: #fff;
   box-shadow: 0 0 0 1px var(--brand-color);
 }
 
 .nav a.highlight {
-  background: var(--brand-color);
+  background: #A294C7;
   color: #fff;
   box-shadow: 0 2px 4px -2px rgba(0,0,0,.2);
 }
 
 .nav a.highlight:hover,
 .nav a.highlight:focus-visible {
-  background: var(--brand-color-hover);
+  background: #A294C7;
 }
 
 /* Spacer pushes right cluster (welcome + logout) */
@@ -107,7 +107,7 @@
 .logout {
   --pad-x: .85rem;
   --pad-y: .5rem;
-  background: var(--danger);
+  background: #A294C7;
   color: #fff;
   border: none;
   padding: var(--pad-y) var(--pad-x);
@@ -123,7 +123,7 @@
 
 .logout:hover,
 .logout:focus-visible {
-  background: var(--danger-hover);
+  background: #c197de;
   outline: none;
 }
 

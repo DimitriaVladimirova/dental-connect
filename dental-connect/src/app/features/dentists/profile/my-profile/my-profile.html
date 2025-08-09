@@ -2,21 +2,23 @@
 <section class="error" *ngIf="!loading() && error()">{{ error() }}</section>
 
 <ng-container *ngIf="!loading() && !error()">
-  
+ 
   <app-dentist-profile-form *ngIf="!profile()"></app-dentist-profile-form>
 
-  <div *ngIf="profile() as d" class="profile-details">
-    <h2>{{ d.fullName }}</h2>
+  <div *ngIf="profile() as d" class="profile-card">
+    <h2 class="profile-title">{{ d.fullName }}</h2>
+
+    <img *ngIf="d.imageUrl" class="avatar" [src]="d.imageUrl" [alt]="d.fullName" />
+
     <p><strong>University:</strong> {{ d.university || '—' }}</p>
     <p><strong>Workplace:</strong> {{ d.workplace || '—' }}</p>
     <p><strong>Specialization:</strong> {{ d.specialization || '—' }}</p>
     <p><strong>Phone:</strong> {{ d.phone || '—' }}</p>
     <p><strong>About:</strong> {{ d.details || '—' }}</p>
-    <img *ngIf="d.imageUrl" [src]="d.imageUrl" alt="{{ d.fullName }}" />
 
     <div *ngIf="isOwner()" class="actions">
-      <button (click)="onEdit()">Edit</button>
-      <button (click)="onDelete()">Delete</button>
+      <button class="btn primary" (click)="onEdit()">Edit</button>
+      <button class="btn danger" (click)="onDelete()">Delete</button>
     </div>
   </div>
 </ng-container>

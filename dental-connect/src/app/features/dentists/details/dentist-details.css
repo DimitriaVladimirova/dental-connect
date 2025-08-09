@@ -1,9 +1,11 @@
 .dentist-details {
-  max-width: 960px;
+  max-width: 600px;
   margin: 2rem auto;
   padding: 0 1rem 2rem;
   font-size: 0.95rem;
   line-height: 1.45;
+  background-color: #F1E3F0;
+  border-radius: 20px; 
 }
 
 .header h1 {
@@ -16,8 +18,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: .5rem .75rem;
-  font-size: .8rem;
-  color: #556371;
+  font-size: .0.95rem;
+  color: black;
 }
 
 .tag {
@@ -64,7 +66,7 @@
 .content h3 {
   margin: 0 0 .4rem;
   font-size: 1rem;
-  color: #263746;
+  color: black;
 }
 
 .content p {
@@ -72,7 +74,7 @@
 }
 
 .muted {
-  color: #6b7c89;
+  color: black;
   font-style: italic;
 }
 
@@ -99,21 +101,21 @@
 }
 
 .btn.primary {
-  background: #1976d2;
+  background: #393B65;
   color: #fff;
 }
 .btn.primary:hover { background: #155fa9; }
 
 .btn.secondary {
-  background: #607d8b;
+  background: #393B65;
   color: #fff;
 }
 .btn.secondary:hover { background: #506873; }
 
 .btn.outline {
-  background: #fff;
+  background: #393B65;
   border-color: #1976d2;
-  color: #1976d2;
+  color: white;
 }
 .btn.outline:hover {
   background: #1976d2;

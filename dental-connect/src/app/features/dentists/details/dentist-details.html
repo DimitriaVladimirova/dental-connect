@@ -18,13 +18,12 @@
       </div>
 
       <div class="content">
-        <h3>About</h3>
+        <h3>About:</h3>
         <p *ngIf="d.details; else noDetails">{{ d.details }}</p>
         <ng-template #noDetails><p class="muted">No additional details provided.</p></ng-template>
 
         <div class="contact" *ngIf="d.phone">
-          <h3>Contact</h3>
-            <p><strong>Phone:</strong> {{ d.phone }}</p>
+          <h3>Contacts</h3><p><strong>Phone:</strong> {{ d.phone }}</p>
         </div>
 
         <div class="line">

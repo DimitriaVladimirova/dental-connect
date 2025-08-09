@@ -1,5 +1,5 @@
 .promotions {
-  max-width: 760px;
+  max-width: 500px;
   margin: 2rem auto;
   padding: 0 1rem 2rem;
 }
@@ -23,21 +23,21 @@ h2 { margin: 0 0 1rem; font-size: 1.4rem; }
   border: 1px solid #d7e1e8;
   border-radius: 8px;
   padding: .85rem .95rem .75rem;
-  background: #fff;
+  background: #F1E3F0;
 }
 
 .line {
   display: flex;
   gap: .4rem;
-  font-size: .8rem;
+  font-size: 0.9rem;
   line-height: 1.25;
   margin-bottom: .3rem;
   flex-wrap: wrap;
 }
 
 .label {
-  font-weight: 600;
-  color: #2b3f50;
+  font-weight: 700;
+  color: black;
   min-width: 70px;
 }
 
@@ -54,7 +54,7 @@ h2 { margin: 0 0 1rem; font-size: 1.4rem; }
 }
 
 .btn {
-  background: #1976d2;
+  background: #393B65;
   color: #fff;
   border: none;
   padding: .45rem .8rem;
@@ -82,19 +82,19 @@ h2 { margin: 0 0 1rem; font-size: 1.4rem; }
 }
 
 .empty {
-  font-size: .75rem;
-  color: #5a6e7e;
+  font-size: .95em;
+  color: black;
   margin-top: 1rem;
   text-align: center;
 }
 
 .guest-hint {
-  font-size: .65rem;
-  color: #4a5d6d;
+  font-size: .95rem;
+  color: black;
   margin-top: .35rem;
 }
 .guest-hint a {
-  color: #1976d2;
+  color: #393B65;
   text-decoration: underline;
 }
 

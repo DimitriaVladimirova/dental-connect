@@ -1,7 +1,7 @@
 .auth-card {
   max-width: 400px;
   margin: 2.5rem auto;
-  background: #fff;
+  background: #F1E3F0;
   padding: 1.75rem 1.5rem 2rem;
   border-radius: 10px;
   border: 1px solid #e3e8ee;
@@ -15,11 +15,11 @@ input {
   border:1px solid #c9d2dc;
   border-radius:6px;
   font-size:.95rem;
-  background:#f9fbfc;
+  background:#f3eff2;
 }
 input:focus { outline:2px solid #1976d2; background:#fff; }
 button {
-  background:#1976d2;
+  background:#393B65;
   color:#fff;
   padding:.7rem 1rem;
   font-size:.95rem;
@@ -29,7 +29,7 @@ button {
   font-weight:500;
 }
 button:disabled { opacity:.6; cursor:not-allowed; }
-button:not(:disabled):hover { background:#125ca5; }
+button:not(:disabled):hover { background:#61649a; }
 .err { font-size:.75rem; color:#d93025; margin-top:-.4rem; }
 .alt { font-size:.8rem; text-align:center; margin:0; }
 .alt a { color:#1976d2; text-decoration:none; }

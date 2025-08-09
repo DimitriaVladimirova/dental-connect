@@ -1,31 +1,91 @@
 <section class="profile-form">
-  <h2>Create / Edit Dentist Profile</h2>
+  <h2>{{ mode() }} Dentist Profile</h2>
 
   <div *ngIf="loading()">Loading...</div>
   <div class="error" *ngIf="error()">{{ error() }}</div>
 
   <form *ngIf="!loading()" [formGroup]="form" (ngSubmit)="submit()">
+
     <div class="row">
-      <label>Full Name *</label>
-      <input formControlName="fullName" type="text" />
-      <div class="field-error" *ngIf="fieldInvalid('fullName')">
-        Full name is required (min 2 characters).
+      <label for="fullName">Full Name *</label>
+      <input id="fullName" formControlName="fullName" type="text"
+             [attr.aria-invalid]="form.controls.fullName.touched && form.controls.fullName.invalid" />
+
+      <div class="field-error" *ngIf="form.controls.fullName.touched && form.controls.fullName.invalid">
+        <div *ngIf="form.controls.fullName.hasError('required')">Full name is required.</div>
+        <div *ngIf="form.controls.fullName.hasError('minlength')">Full name must be at least 2 characters.</div>
+        <div *ngIf="form.controls.fullName.hasError('pattern')">Use letters and spaces only.</div>
       </div>
     </div>
 
-    <div class="row"><label>University</label><input formControlName="university" type="text" /></div>
-    <div class="row"><label>Workplace</label><input formControlName="workplace" type="text" /></div>
-    <div class="row"><label>Specialization</label><input formControlName="specialization" type="text" /></div>
-    <div class="row"><label>Phone</label><input formControlName="phone" type="text" /></div>
-    <div class="row"><label>Image URL</label><input formControlName="imageUrl" type="url" /></div>
     <div class="row">
-      <label>Details / Bio</label>
-      <textarea formControlName="details" rows="4"></textarea>
+      <label for="university">University *</label>
+      <input id="university" formControlName="university" type="text"
+             [attr.aria-invalid]="form.controls.university.touched && form.controls.university.invalid" />
+
+      <div class="field-error" *ngIf="form.controls.university.touched && form.controls.university.invalid">
+        <div *ngIf="form.controls.university.hasError('required')">University is required.</div>
+        <div *ngIf="form.controls.university.hasError('pattern')">Use letters and spaces only.</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="workplace">Workplace *</label>
+      <input id="workplace" formControlName="workplace" type="text"
+             [attr.aria-invalid]="form.controls.workplace.touched && form.controls.workplace.invalid" />
+
+      <div class="field-error" *ngIf="form.controls.workplace.touched && form.controls.workplace.invalid">
+        <div *ngIf="form.controls.workplace.hasError('required')">Workplace is required.</div>
+        <div *ngIf="form.controls.workplace.hasError('pattern')">Use letters and spaces only.</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="specialization">Specialization *</label>
+      <input id="specialization" formControlName="specialization" type="text"
+             [attr.aria-invalid]="form.controls.specialization.touched && form.controls.specialization.invalid" />
+
+      <div class="field-error" *ngIf="form.controls.specialization.touched && form.controls.specialization.invalid">
+        <div *ngIf="form.controls.specialization.hasError('required')">Specialization is required.</div>
+        <div *ngIf="form.controls.specialization.hasError('pattern')">Use letters and spaces only.</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="phone">Phone *</label>
+      <input id="phone" formControlName="phone" type="text"
+             placeholder="+359888123456"
+             [attr.aria-invalid]="form.controls.phone.touched && form.controls.phone.invalid" />
+
+      <div class="field-error" *ngIf="form.controls.phone.touched && form.controls.phone.invalid">
+        <div *ngIf="form.controls.phone.hasError('required')">Phone is required.</div>
+        <div *ngIf="form.controls.phone.hasError('pattern')">
+          Enter a valid phone number (optional “+”, 7–15 digits).
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="imageUrl">Image URL</label>
+      <input id="imageUrl" formControlName="imageUrl" type="url" />
+    </div>
+
+    <div class="row">
+      <label for="details">Details / Bio *</label>
+      <textarea id="details" formControlName="details" rows="4"
+                [attr.aria-invalid]="form.controls.details.touched && form.controls.details.invalid"></textarea>
+
+      <div class="field-error" *ngIf="form.controls.details.touched && form.controls.details.invalid">
+        <div *ngIf="form.controls.details.hasError('required')">Details are required.</div>
+        <div *ngIf="form.controls.details.hasError('pattern')">
+          Use only letters, numbers, and spaces.
+        </div>
+      </div>
     </div>
 
     <div class="actions">
-      <button type="submit" [disabled]="saving()">
-        {{ saving() ? 'Saving...' : ('Save' + ' Profile') }}
+      <button type="submit" [disabled]="saving() || form.invalid">
+        {{ saving() ? 'Saving...' : 'Save Profile' }}
       </button>
     </div>
   </form>

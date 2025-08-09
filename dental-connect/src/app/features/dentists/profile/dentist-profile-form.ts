@@ -24,13 +24,13 @@ export class DentistProfileFormComponent implements OnInit {
   existingId = signal<string | null>(null);
 
   form = this.fb.nonNullable.group({
-    fullName: ['', [Validators.required, Validators.minLength(2)]],
-    university: [''],
-    workplace: [''],
-    specialization: [''],
+    fullName: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[A-Za-z\s]+$/)]],
+    university: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
+    workplace: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
+    specialization: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
     imageUrl: [''],
-    details: [''],
-    phone: ['']
+    details: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9\s,\.]+$/)]],
+    phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]]
   });
 
   mode = computed(() => this.existingId() ? 'Edit' : 'Create');
