@@ -41,7 +41,11 @@ export class LoginComponent {
     this.loading = true;
     this.error = '';
 
-    const { email, password } = this.form.value;
+    let { email, password } = this.form.value;
+
+    email = email?.trim();
+    password = password?.trim();
+
     this.auth.login(email, password).subscribe({
       next: () => {
         this.loading = false;

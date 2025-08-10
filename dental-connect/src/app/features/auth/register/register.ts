@@ -92,7 +92,7 @@ export class RegisterComponent {
     }
   }
 
-  submit() {
+    submit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -103,7 +103,10 @@ export class RegisterComponent {
 
     if (this.role === 'patient') {
       const { email, password } = this.patientGroup.value;
-      this.auth.register(email, password, 'patient', undefined).subscribe({
+      const cleanEmail = (email ?? '').trim();
+      const cleanPassword = (password ?? '').trim();
+
+      this.auth.register(cleanEmail, cleanPassword, 'patient', undefined).subscribe({
         next: () => {
           this.loading = false;
           this.router.navigateByUrl('/');
@@ -115,22 +118,18 @@ export class RegisterComponent {
       });
     } else {
       const { email, password, personalHealthNumber } = this.dentistGroup.value;
-      this.auth.register(email, password, 'dentist', personalHealthNumber).subscribe({
-        next: (user) => {
-          this.dentistsService.upsertMine(user._id, {}).subscribe({
-            next: () => {
-              this.loading = false;
-              this.router.navigateByUrl('/dentists/profile/create');
-            },
-            error: () => {
-              this.loading = false;
-              this.error = 'Dentist profile creation failed';
-            }
-          });
-        },
-        error: err => {
-          this.loading = false;
-          this.error = err?.error?.message || 'Registration failed';
+      const cleanEmail = (email ?? '').trim();
+      const cleanPassword = (password ?? '').trim();
+      const cleanPHN = String(personalHealthNumber ?? '').trim();
+
+      this.auth.register(cleanEmail, cleanPassword, 'dentist', cleanPHN).subscribe({
+        next: () => {
+        this.loading = false;
+        this.router.navigateByUrl('/dentists/profile/create');
+      },
+      error: err => {
+        this.loading = false;
+        this.error = err?.error?.message || 'Registration failed';
         }
       });
     }

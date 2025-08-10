@@ -44,6 +44,7 @@ export class DentistDetailsComponent {
   fetch(id: string) {
     this.loading.set(true);
     this.error.set(null);
+
     this.dentists.getOne(id).subscribe({
       next: dentist => {
         if (!dentist) {
@@ -63,6 +64,7 @@ export class DentistDetailsComponent {
 
   loadPurchases() {
     const dentistId = this.route.snapshot.paramMap.get('id')!;
+    
     this.promos.getPurchasesByDentist(dentistId).subscribe({
       next: purchases => this.totalPurchases.set(purchases.length),
       error: err => console.warn('Failed to load purchases', err)
