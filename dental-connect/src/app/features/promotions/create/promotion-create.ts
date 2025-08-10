@@ -38,7 +38,7 @@ export class PromotionCreate implements OnInit {
   form = this.fb.group({
     service: ['', [Validators.required, Validators.minLength(2)]],
     price: [null as number | null, [Validators.required, Validators.min(1)]],
-    description: ['']
+    description: ['', Validators.maxLength(200)]
   });
 
   ngOnInit(): void {

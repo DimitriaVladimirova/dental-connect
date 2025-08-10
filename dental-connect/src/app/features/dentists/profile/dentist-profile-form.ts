@@ -29,7 +29,7 @@ export class DentistProfileFormComponent implements OnInit {
     workplace: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
     specialization: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
     imageUrl: [''],
-    details: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9\s,\.]+$/)]],
+    details: ['', [Validators.required, Validators.maxLength(200), Validators.pattern(/^[A-Za-z0-9\s,\.]+$/)]],
     phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]]
   });
 
