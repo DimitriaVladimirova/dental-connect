@@ -148,7 +148,17 @@ export class PromotionsListComponent {
     this.router.navigate(['/promotions', promotion._id, 'edit']);
   }
 
+  isOwner(promotion: Promotion) {
+    return this.auth.user?._id === promotion._ownerId;
+  }
+
   deletePromotion(promotion: Promotion) {
+
+    if(!this.isOwner(promotion)) {
+      alert('YOu are not authorized to delete this promotion.')
+      return
+    }
+
     if (!confirm('Delete this promotion?')) return;
     this.promos.delete(promotion._id!).subscribe({
       next: () => this.fetch(),

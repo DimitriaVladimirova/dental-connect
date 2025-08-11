@@ -50,7 +50,7 @@
             [routerLink]="['/promotions', p._id, 'edit']"
             class="btn small">Edit</a>
 
-        <button *ngIf="isDentist() && p._ownerId === auth.user?._id"
+        <button *ngIf="isOwner(p)"
             (click)="deletePromotion(p)"
             class="btn danger small">
             Delete
